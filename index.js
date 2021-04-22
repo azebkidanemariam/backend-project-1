@@ -3,6 +3,7 @@ const express = require("express");
 require("dotenv").config();
 
 const app = express();
+const {errorHandler} = require('./Middelwares/errorHandler')
 
 // const reciperoutes = require("./routes/routes");
 // const logger = require("./middleware/logger");
@@ -19,7 +20,7 @@ app.use('/api/v1', userRoutes)
 
 const PORT = process.env.PORT || 8000;
 
-// app.use(logger);
+app.use(errorHandler);
 
 // app.use(headers);
 

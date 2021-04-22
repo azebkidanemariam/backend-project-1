@@ -1,5 +1,6 @@
-# node_modules
-# package-lock.json
-# .env
+node_modules
+package-lock.json
+.env
 cwc.sqlite3
 ingriedients.txt
+DS.Store
