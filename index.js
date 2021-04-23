@@ -10,6 +10,10 @@ const {errorHandler} = require('./Middelwares/errorHandler')
 // const headers = require("./middleware/headers");
 const userRoutes = require ('./routes/users.js')
 
+
+const db = require("./database/setup");
+
+
 app.use(express.json());
 
 // app.get("/", (req, res) => {

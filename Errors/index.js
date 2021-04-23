@@ -15,8 +15,25 @@ class NotValid extends RecipeError {
     this.errorCode = 403;
   }
 }
+class NotAuthorized extends RecipeError {
+  constructor() {
+    super();
+    this.message = "Not Authorized";
+    this.errorCode = 401;
+  }
+}
+
+class TokenExpired extends RecipeError {
+  constructor() {
+    super();
+    this.message = "Token expired, Please login again";
+    this.errorCode = 401;
+  }
+}
 module.exports = {
   RecipeError,
   InvalidBody,
   NotValid,
+  NotAuthorized,
+  TokenExpired,
 };

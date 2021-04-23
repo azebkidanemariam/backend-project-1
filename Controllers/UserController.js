@@ -26,4 +26,8 @@ module.exports = {
       next(error);
     }
   },
+  me(req, res, next) {
+    const user = req.user;
+    res.json({ user });
+  },
 };

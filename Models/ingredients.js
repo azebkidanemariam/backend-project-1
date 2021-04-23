@@ -1,14 +1,10 @@
-// const db = require('../database/database.js');
+const db = require("../database/connection");
+const { DataTypes } = require("sequelize");
 
-
-// function ingredientsList() {
-//     return new Promise((resolve, reject) => {
-//         db.all("SELECT * FROM Ingredients", function (err, row) {
-//             resolve(row)
-//         })
-//     })
-// }
-
-// module.exports={
-//     ingredientsList,
-// }
+const Ingredients = db.define("Ingredients", {
+  Ingridents: {
+    type: DataTypes.STRING,
+    allowNull: false,
+  },
+});
+module.exports = Ingredients;

@@ -1,7 +1,7 @@
 const db = require("../database/connection");
 const { DataTypes } = require("sequelize");
 const bcrypt = require("bcryptjs");
-const { NotValid } = require("../Errors");
+const { NotValid, TokenExpired, NotAuthorized } = require("../Errors");
 const jwt = require("jsonwebtoken");
 
 const User = db.define("User", {
@@ -38,6 +38,18 @@ User.authenticate = async (email, password) => {
     return jwt.sign(payload, process.env.JWT_SECRET);
   } else {
     throw new NotValid();
+  }
+};
+
+User.validateToken = (token) => {
+  try {
+    return jwt.verify(token, process.env.JWT_SECRET, { expiresIn: "1w" });
+  } catch (error) {
+    if (error instanceof jwt.TokenExpiredError) {
+      throw new TokenExpired();
+    } else if (error instanceof jwt.JsonWebTokenError) {
+      throw new NotAuthorized();
+    }
   }
 };
 module.exports = User;
