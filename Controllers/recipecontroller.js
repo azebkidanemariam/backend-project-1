@@ -1,5 +1,6 @@
 // const Recipe = require("../Models/recipe");
 const { NotValid, RecipeNotFound } = require("../Errors");
+const { update } = require("../Models/recipe");
 const Recipe = require("../Models/recipe");
 module.exports = {
   async create(req, res, next) {
@@ -53,4 +54,19 @@ module.exports = {
       const recipe = await Recipe.findOne({where:{id}})
       if (!recipe){ throw new RecipeNotFound(id)}
       res.json({recipe})
-  }};
+  },
+
+  async updateRecipe( req, res, next ){
+      try{
+          const {id} = req.params
+          const { title, ingridents, Instruction } = req.body;
+          const fields = {}
+          if (title) fields.title = title
+          if (ingridents) fields.ingridents = ingridents
+          if (Instruction) fields.Instruction = Instruction
+          const result = await Recipe.update(fields, {where: {id}})
+          res.json({ message: 'post updated'})
+
+      }catch(error){ next(error)}
+    }
+};
