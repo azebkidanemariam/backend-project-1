@@ -19,7 +19,7 @@ app.use(express.json());
 
 app.use("/api/v1", userRoutes);
 app.use("/api/v1/", ingredientsRoutes);
-app.use("/api/v1/recipe", recipeRoutes);
+app.use("/api/v1/recipes", recipeRoutes);
 
 const PORT = process.env.PORT || 8000;
 

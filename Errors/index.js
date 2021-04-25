@@ -30,10 +30,19 @@ class TokenExpired extends RecipeError {
     this.errorCode = 401;
   }
 }
+
+class RecipeNotFound extends RecipeError {
+  constructor(){
+    super()
+    this.message = `Post with id ${id} not found`
+    this.errorCode = 404
+  }
+}
 module.exports = {
   RecipeError,
   InvalidBody,
   NotValid,
   NotAuthorized,
   TokenExpired,
+  RecipeNotFound
 };
