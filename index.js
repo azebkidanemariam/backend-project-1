@@ -10,6 +10,8 @@ const { errorHandler } = require("./Middelwares/errorHandler");
 // const headers = require("./middleware/headers");
 const userRoutes = require("./routes/users.js");
 const ingredientsRoutes = require("./routes/ingredients.js");
+const recipeRoutes = require("./routes/recipe.js");
+
 
 const db = require("./database/setup");
 
@@ -17,6 +19,7 @@ app.use(express.json());
 
 app.use("/api/v1", userRoutes);
 app.use("/api/v1/", ingredientsRoutes);
+app.use("/api/v1/recipe", recipeRoutes);
 
 const PORT = process.env.PORT || 8000;
 
