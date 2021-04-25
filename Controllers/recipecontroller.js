@@ -1,6 +1,6 @@
 // const Recipe = require("../Models/recipe");
-const { NotValid, RecipeNotFound } = require("../Errors");
-const { update } = require("../Models/recipe");
+const { NotValid, RecipeNotFound, RecipeError, NotAuthorized } = require("../Errors");
+// const { update } = require("../Models/recipe");
 const Recipe = require("../Models/recipe");
 module.exports = {
   async create(req, res, next) {
@@ -43,30 +43,49 @@ module.exports = {
 
     const recipes = await Recipe.findAll({
       limit: pageSize,
-      offset: {page_1}  * pageSize,
+      offset: { page_1 } * pageSize,
       where: { UserId },
     });
     res.json({ recipes });
   },
 
-  async getOneRecipe(req, res , next){
-      const { id } = req.params
-      const recipe = await Recipe.findOne({where:{id}})
-      if (!recipe){ throw new RecipeNotFound(id)}
-      res.json({recipe})
+  async getOneRecipe(req, res, next) {
+    const { id } = req.params;
+    const recipe = await Recipe.findOne({ where: { id } });
+    if (!recipe) {
+      throw new RecipeNotFound(id);
+    }
+    res.json({ recipe });
   },
 
-  async updateRecipe( req, res, next ){
-      try{
-          const {id} = req.params
-          const { title, ingridents, Instruction } = req.body;
-          const fields = {}
-          if (title) fields.title = title
-          if (ingridents) fields.ingridents = ingridents
-          if (Instruction) fields.Instruction = Instruction
-          const result = await Recipe.update(fields, {where: {id}})
-          res.json({ message: 'post updated'})
-
-      }catch(error){ next(error)}
+  async updateRecipe(req, res, next) {
+    try {
+      const { id } = req.params;
+      const { title, ingridents, Instruction } = req.body;
+      const fields = {};
+      if (title) fields.title = title;
+      if (ingridents) fields.ingridents = ingridents;
+      if (Instruction) fields.Instruction = Instruction;
+      const recipe = await Recipe.findOne( {where:{id}})
+      if(!recipe){throw new RecipeNotFound(id)}
+      if (recipe.UserId != req.user.id){
+          throw new NotAuthorized()
+      }
+      const result = await Recipe.update(fields, { where: { id } });
+      res.json({ message: "post updated" });
+    } catch (error) {
+      next(error);
     }
-};
+  },
+
+  async deleteRecipe( req, res, next){
+      try{
+          const { id } = req.params 
+          const recipe = await Recipe.findOne({ where:{id}})
+          if(recipe.UserId != req.user.id){throw new NotAuthorized()}
+              await recipe.destroy()
+              res.json ({ message: 'Post annihilated'})
+          }catch(error){ next(error)}
+      }
+  }
+

@@ -6,8 +6,8 @@ const Auth = require("../Middelwares/auth");
 router.post("/", Auth.user, RecipeController.create);
 router.get("/", Auth.user , RecipeController.getAllRecipes);
 router.get('/:id', RecipeController.getOneRecipe)
-router.patch('/:id', RecipeController.updateRecipe)
-// router.delete('/:id', RecipeController.delete)
-// router.get('/me', Auth.user, UserController.me)
+router.patch('/:id',Auth.user, RecipeController.updateRecipe)
+router.delete('/:id',Auth.user, RecipeController.deleteRecipe)
+
 
 module.exports = router;
