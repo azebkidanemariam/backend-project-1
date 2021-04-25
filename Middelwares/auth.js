@@ -13,5 +13,6 @@ module.exports = {
     req.user = user;
     next()
   },
-  Recipe, Ingredients
+ Recipe,Ingredients
+ 
 };
