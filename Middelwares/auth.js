@@ -2,6 +2,7 @@ const { NotAuthorized } = require("../Errors");
 const User = require("../Models/User");
 const Recipe = require("../Models/Recipe");
 const Ingredients = require("../Models/Ingredients");
+const IngredientRecipe = require("../Models/ingredientRecipe");
 module.exports = {
   user: (req, res, next) => {
     const { authorization } = req.headers;
@@ -11,8 +12,9 @@ module.exports = {
     const token = authorization.replace("Bearer ", "");
     const user = User.validateToken(token);
     req.user = user;
-    next()
+    next();
   },
- Recipe,Ingredients
- 
+  Recipe,
+  Ingredients,
+  IngredientRecipe,
 };

@@ -1,6 +1,5 @@
 const { NotValid } = require("../Errors");
 const Ingredients = require("../Models/ingredients");
-// const { Op } = require("sequelize");
 
 module.exports = {
   async GetAllIngredients(req, res, next) {
@@ -10,13 +9,27 @@ module.exports = {
         throw new NotValid("Ingridents");
       }
       const ingredients = await Ingredients.findAll({
-       attributes:['Ingridents']
+        attributes: ["Ingridents"],
       });
       res.json({ ingredients });
     } catch (error) {
       next(error);
     }
   },
+
+  async GetOneIngredient(req, res, next) {
+    try {
+      const { id } = req.params;
+      if (!id) {
+        throw new NotValid("id");
+      }
+      const ingredients = await Ingredients.findOne({
+        where: { id: id },
+      }).then((ingredients) => {
+        res.json({ ingredients });
+      });
+    } catch (error) {
+      next(error);
+    }
+  },
 };
-
-
