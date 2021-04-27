@@ -17,6 +17,8 @@ const Recipe = db.define("Recipe", {
   },
 });
 
+
+
 User.hasMany(Recipe);
 Recipe.belongsTo(User);
 

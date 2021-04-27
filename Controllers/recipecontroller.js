@@ -99,22 +99,27 @@ module.exports = {
 
   async addIngredientsToRecipe(req, res, next) {
     try {
-      const { IngredientId, RecipeId, amount, measure } = req.body;
-      if (!amount || !measure || !IngredientId || !RecipeId) {
+      const { id } = req.params;
+      let { Ingredients } = req.body;
+      if (!Ingredients.length) {
         throw new NotValid(["amount"]);
       }
+      const UserId = req.user.id;
+      const recipe = await Recipe.findByPk( id);
+      if (recipe.UserId != UserId) {
+        throw new NotAuthorized();
+      }
+      Ingredients = Ingredients.map((ingredient) => ({
+        ...ingredient,
+        RecipeId: id,
+      }));
+      const data = await IngredientRecipe.bulkCreate(Ingredients);
 
-      const data = await IngredientRecipe.create({
-        amount,
-        unit,
-        IngredientId,
-        RecipeId,
-      });
       console.log(data);
 
-      res.json({ message: `New Ingredient added to recipe no ${RecipeId}!` });
+      res.json({ message: `New Ingredient added to recipe no ${id}!` });
     } catch (error) {
-      next(error);
+      res.json(error.message);
     }
   },
 };
