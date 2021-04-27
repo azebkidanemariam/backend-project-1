@@ -4,7 +4,7 @@ const router = new Router();
 const IngredientsController = require("../Controllers/IngredientsController");
 const Auth = require("../Middelwares/auth");
 router.get(
-  "/GetAllIngredients",
+  "/:page",
   Auth.user,
   IngredientsController.GetAllIngredients
 );

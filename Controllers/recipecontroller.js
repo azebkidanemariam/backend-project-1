@@ -31,14 +31,10 @@ module.exports = {
 
   async getAllRecipes(req, res, next) {
     const page = +req.params.page || 0;
-    let pageSize = +req.params.pageSize || 10;
-    pageSize = pageSize > 10 ? 10 : pageSize;
-    pageSize = pageSize < 1 ? 1 : pageSize;
-
     const UserId = req.user.id;
     const recipes = await Recipe.findAll({
-      limit: pageSize,
-      offset: page * pageSize,
+      limit: 2,
+      offset: (page - 1) * 2,
       where: { UserId },
     });
     res.json({ recipes });
@@ -103,8 +99,6 @@ module.exports = {
 
   async addIngredientsToRecipe(req, res, next) {
     try {
-      // const IngredientId = +req .Ingredients.id
-      // const RecipeId= +req.Recipe.id
       const { IngredientId, RecipeId, amount, measure } = req.body;
       if (!amount || !measure || !IngredientId || !RecipeId) {
         throw new NotValid(["amount"]);
